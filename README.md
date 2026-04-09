@@ -86,10 +86,10 @@ src/
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/devCarlosSantoss/teste-iniflex-projedata.git
 
 # Entrar na pasta
-cd seu-repositorio
+cd teste-iniflex-projedata
 
 # Compilar o projeto
 mvn clean install
