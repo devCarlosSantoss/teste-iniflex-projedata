@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class FuncionarioService {
 
-    // Carrega os funcionários do JSON
+    // 3.1 – Carrega funcionários
     public List<Funcionario> carregarFuncionarios() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -33,7 +33,7 @@ public class FuncionarioService {
         }
     }
 
-    // Remover funcionário pelo nome
+    // 3.2 – Remove funcionário por nome
     public void removerFuncionario(List<Funcionario> lista, String nome) {
         boolean removed = lista.removeIf(funcionario -> funcionario.getNome().equalsIgnoreCase(nome));
 
@@ -42,18 +42,19 @@ public class FuncionarioService {
         }
     }
 
-    // Aplicar aumento
+    // 3.4 – Aplica aumento de 10%
     public void aplicarAumento(List<Funcionario> lista) {
         lista.forEach(funcionario -> {
             funcionario.setSalario(funcionario.getSalario().multiply(new BigDecimal("1.10")));
         });
     }
 
-    // Agrupar funcionários por função
+    // 3.5 – Agrupa por função usando Map
     public Map<Funcao, List<Funcionario>> agruparPorFuncao(List<Funcionario> lista) {
         return lista.stream().collect(Collectors.groupingBy(Funcionario::getFuncao));
     }
 
+    // 3.6 – Imprime agrupados por função
     public void imprimirAgrupados(Map<Funcao, List<Funcionario>> mapa) {
         mapa.forEach(((funcao, list) -> {
             System.out.println("\nFunção: " + funcao);
@@ -62,6 +63,7 @@ public class FuncionarioService {
         }));
     }
 
+    // 3.8 – Filtra aniversariantes mês 10 e 12
     public List<Funcionario> buscarAniversariantes(List<Funcionario> lista) {
         return lista.stream().filter(funcionario -> {
             int mes = funcionario.getDataNascimento().getMonthValue();
@@ -69,21 +71,25 @@ public class FuncionarioService {
         }).toList();
     }
 
+    // 3.9 – Busca funcionário mais velho
     public Funcionario buscarMaisVelho(List<Funcionario> lista) {
         return lista.stream()
                 .min(Comparator.comparing(Funcionario::getDataNascimento))
                 .orElseThrow(() -> new FuncionarioException("Lista vazia"));
     }
 
+    // 3.10 – Ordena funcionários por nome
     public List<Funcionario> ordenarPorNome(List<Funcionario> lista) {
         return lista.stream()
                 .sorted(Comparator.comparing(Funcionario::getNome)).toList();
     }
 
+    // 3.11 – Calcula soma total dos salários
     public BigDecimal calcularSalarios(List<Funcionario> lista) {
         return lista.stream().map(Funcionario::getSalario).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    // 3.12 – Calcula salários mínimos e imprime em tabela
     public void imprimirSalariosMinimosTabela(List<Funcionario> lista) {
 
         BigDecimal salarioMinimo = new BigDecimal("1212.00");
@@ -107,18 +113,7 @@ public class FuncionarioService {
         );
     }
 
-    public void imprimirFuncionarios(List<Funcionario> lista) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        NumberFormat nf = NumberFormat.getInstance(new Locale("pt", "BR"));
-
-        lista.forEach((funcionario -> System.out.println(
-                funcionario.getNome() + " | " +
-                        funcionario.getDataNascimento().format(dtf) + " | " +
-                        nf.format(funcionario.getSalario()) + " | " +
-                        funcionario.getFuncao()
-        )));
-    }
-
+    // 3.3 – Impressão formatada
     public void imprimirTabela(List<Funcionario> lista) {
 
         String formatoLinha = "| %-15s | %-10s | %-15s |%n";
